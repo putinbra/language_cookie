@@ -1,3 +1,4 @@
+<?php
 session_start();
 
 $language = $_GET['lang'] ?? "en";
@@ -32,9 +33,9 @@ function defaultlanguage($default_language, $browser_language, $language){
     setcookie('languageCookie[browserLanguage]' , $browser_language, time() - 7776100);
     setcookie('languageCookie[language]' , $language, time() - 7776100);
 }
-function autolanguage($brlang_path){
-    (file_exists($brlang_path)) ? browserlanguage() : defaultlanguage();
+function autolanguage($brlang_path, $browser_language, $default_language, $language){
+    (file_exists($brlang_path)) ? browserlanguage($browser_language, $default_language) : defaultlanguage($default_language, $browser_language, $language);
 }
 
-if(isset($_GET['lang'])) (file_exists($languagepage) ? requireonceget() : require_once($error_language_not_exist));
-(isset($_COOKIE)) ? cookiefunction(): autolanguage();
+if(isset($_GET['lang'])) (file_exists($languagepage) ? requireonceget($language, $browser_language, $default_language) : require_once($error_language_not_exist));
+(isset($_COOKIE)) ? cookiefunction($brlang_path , $languagepage , $default_language): autolanguage($brlang_path);
