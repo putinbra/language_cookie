@@ -21,7 +21,7 @@ function cookiefunction($brlang_path , $languagepage , $default_language){
     if(isset($_COOKIE['languageCookie']['language'])) require_once($languagepage);
     if(isset($_COOKIE['languageCookie']['defaultLanguage'])) require_once($default_language);
 }
-function browserlanguage($browser_language, $default_language){
+function browserlanguage($browser_language, $default_language, $language){
     require_once("$browser_language/index_$browser_language.php");
     setcookie('languageCookie[browserLanguage]' , $browser_language, strtotime('+90 days'));
     setcookie('languageCookie[defaultLanguage]' , $default_language, time() - 7776100);
@@ -38,4 +38,4 @@ function autolanguage($brlang_path, $browser_language, $default_language, $langu
 }
 
 if(isset($_GET['lang'])) (file_exists($languagepage) ? requireonceget($language, $browser_language, $default_language) : require_once($error_language_not_exist));
-(isset($_COOKIE)) ? cookiefunction($brlang_path , $languagepage , $default_language): autolanguage($brlang_path);
+(isset($_COOKIE)) ? cookiefunction($brlang_path , $languagepage , $default_language): autolanguage($brlang_path, $browser_language, $default_language, $language);
