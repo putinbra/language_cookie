@@ -10,7 +10,6 @@ $language = $_GET['lang'] ?? "en";
 $language_path = "{$language}/index_{$language}.php";
 $deafult_language_path = "en/index_en.php";
 $error_language_not_exist = "errors/error-lang-404.php";
-$cookie_language_path = "{$_COOKIE['languageCookie']}/index_{$_COOKIE['languageCookie']}.php";
 $english = "en";
 
 function getlanguageexist($language_path, $language){
@@ -42,11 +41,4 @@ function cookienotissetget($browser_language_path, $lang, $deafult_language_path
 
 if(isset($_GET['lang'])) getlanguage($language_path, $language, $error_language_not_exist);
 
-(isset($_COOKIE['languageCookie'])) ? require_once($cookie_language_path): cookienotissetget($browser_language_path, $lang, $deafult_language_path, $english); 
-
-
-
-
-
-
-
+(isset($_COOKIE['languageCookie'])) ? require_once("{$_COOKIE['languageCookie']}/index_{$_COOKIE['languageCookie']}.php"): cookienotissetget($browser_language_path, $lang, $deafult_language_path, $english); 
