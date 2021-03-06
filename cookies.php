@@ -21,7 +21,7 @@ function getlanguageexist($language_path, $language, $language_cookie_name, $coo
 }
 
 function getlanguage($language_path, $language, $language_cookie_name, $cookie_strtotime, $error_language_not_exist){
-    (file_exists($language_path)) ? getlanguageexist($language_path, $language, $language_cookie_name, $language, $cookie_strtotime) : require_once($error_language_not_exist);
+    (file_exists($language_path)) ? getlanguageexist($language_path, $language_cookie_name, $language, $cookie_strtotime) : require_once($error_language_not_exist);
 }
 
 function browserlanguage($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime){
