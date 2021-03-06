@@ -10,38 +10,40 @@ $language = $_GET['lang'] ?? "en";
 $language_path = "{$language}/index_{$language}.php";
 $deafult_language_path = "en/index_en.php";
 $error_language_not_exist = "errors/error-lang-404.php";
-$cookie_language_path = "{$_COOKIE['languageCookie']}/index_{$_COOKIE['languageCookie']}.php";
-$language_cookie_name = 'languageCookie';
-$cookie_strtotime = strtotime('+90 days');
+$cookie_language_path = "{$_COOKIE['languageCookie']}/index_{$_COOKIE['languageCookie']}";
 $english = "en";
 
-function getlanguageexist($language_path, $language, $language_cookie_name, $cookie_strtotime){
+function getlanguageexist($language_path, $language){
+    setcookie('languageCookie', $language, strtotime('+90 days'));
     require_once($language_path);
-    setcookie($language_cookie_name, $language, $cookie_strtotime);
 }
 
-function getlanguage($language_path, $language, $language_cookie_name, $cookie_strtotime, $error_language_not_exist){
-    (file_exists($language_path)) ? getlanguageexist($language_path, $language_cookie_name, $language, $cookie_strtotime) : require_once($error_language_not_exist);
+function getlanguage($language_path, $language, $error_language_not_exist){
+    (file_exists($language_path)) ? getlanguageexist($language_path, $language) : require_once($error_language_not_exist);
 }
 
-function browserlanguage($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime){
+function browserlanguage($browser_language_path, $lang){
     require_once($browser_language_path);
-    setcookie($language_cookie_name, $lang, $cookie_strtotime);
+    setcookie('languageCookie', $lang, strtotime('+90 days'));
 }
 
-function defaultbrowserlanguage($deafult_language_path, $language_cookie_name, $english, $cookie_strtotime){
+function defaultbrowserlanguage($deafult_language_path, $english){
     require_once($deafult_language_path);
-    setcookie($language_cookie_name, $english, $cookie_strtotime);
+    setcookie('languageCookie', $english, strtotime('+90 days'));
 }
 
-function browserlanguagepathexist($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime, $deafult_language_path, $english){
-    (file_exists($browser_language_path)) ? browserlanguage($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime) : defaultbrowserlanguage($deafult_language_path, $language_cookie_name, $english, $cookie_strtotime);
+function browserlanguagepathexist($browser_language_path, $lang, $deafult_language_path, $english){
+    (file_exists($browser_language_path)) ? browserlanguage($browser_language_path, $lang) : defaultbrowserlanguage($deafult_language_path, $english);
 }
 
-function cookienotissetget($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime, $deafult_language_path, $english){
-    if(!isset($_GET['lang'])) browserlanguagepathexist($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime, $deafult_language_path, $english);  
+function cookienotissetget($browser_language_path, $lang, $deafult_language_path, $english){
+    if(!isset($_GET['lang'])) browserlanguagepathexist($browser_language_path, $lang, $deafult_language_path, $english);  
 }
 
-if(isset($_GET['lang'])) getlanguage($language_path, $language, $language_cookie_name, $language, $cookie_strtotime, $error_language_not_exist);
+if(isset($_GET['lang'])) getlanguage($language_path, $language, $error_language_not_exist);
 
-(isset($_COOKIE['languageCookie'])) ? require_once($cookie_language_path): cookienotissetget($browser_language_path, $language_cookie_name, $lang, $cookie_strtotime, $deafult_language_path, $english); 
+(isset($_COOKIE['languageCookie'])) ? require_once($cookie_language_path): cookienotissetget($browser_language_path, $lang, $deafult_language_path, $english); 
+
+
+
+
